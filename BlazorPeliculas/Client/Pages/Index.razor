@@ -12,12 +12,14 @@
 <button @onclick="@( () => Console.WriteLine("Me han clickeado") )">Presioname</button>
 <button @onclick="@ManejarClick">Presioname</button>
 
+<!--Uso de Clases -->
 <div>
     <h3>Pelicula</h3>
     <p>Titulo: <b>@SpiderMan.Titulo</b></p>
     <p>Fecha Lanzamiento: <b>@SpiderMan.Lanzamiento.ToString("dd MMM yyyy")</b></p>
 </div>
 
+<!--Uso de foreach-->
 <div>
     <h3>Peliculas</h3>
     @foreach (var pelicula in ObtenerPeliculas())
@@ -29,19 +31,7 @@
     }
 </div>
 
-<div>
-    <h3>Peliculas</h3>
-    @foreach (var pelicula in ObtenerPeliculas())
-    {
-        <div>
-            <p>Titulo: <b>@pelicula.Titulo</b></p>
-            <p>Fecha Lanzamiento: <b>@pelicula.Lanzamiento.ToString("dd MMM yyyy")</b></p>
-        </div>
-    }
-</div>
-
-
-
+<!--Uso de for-->
 <div>
     <h3>Peliculas</h3>
     @for (var i = 0; i < Peliculas.Count; i++)
@@ -53,11 +43,78 @@
     }
 </div>
 
+<!-- Uso de condiciones -->
+<div>
+    <h3>Peliculas</h3>
+    @for (var i = 0; i < Peliculas.Count; i++)
+    {
+        <div>
+            @if (i == Peliculas.Count - 1)
+            {
+                <p>Esta es la ultima pelicula</p>
+            }
+            <p>@(i+1)Titulo: <b>@Peliculas[i].Titulo</b></p>
+            <p>Fecha Lanzamiento: <b>@Peliculas[i].Lanzamiento.ToString("dd MMM yyyy")</b></p>
+        </div>
+    }
+</div>
+
+<div>
+    <h3>Peliculas</h3>
+    @if (Peliculas2 == null)
+    {
+        <img src="https://media.tenor.com/images/965beb93fefb499a174d45bfcef23c30/tenor.gif" />
+        <text>Cargando... </text>
+    }
+    else
+    {
+        @for (var i = 0; i < Peliculas2.Count; i++)
+        {
+            <div>
+                @if (i == Peliculas2.Count - 1)
+                {
+                    <p>Esta es la ultima pelicula</p>
+                }
+                <p>@(i + 1)Titulo: <b>@Peliculas2[i].Titulo</b></p>
+                <p>Fecha Lanzamiento: <b>@Peliculas2[i].Lanzamiento.ToString("dd MMM yyyy")</b></p>
+            </div>
+        }
+    }
+</div>
+
+<div>
+    <h3>Peliculas</h3>
+    @if (Peliculas3 == null)
+    {
+        <img src="https://media.tenor.com/images/965beb93fefb499a174d45bfcef23c30/tenor.gif" />
+        <text>Cargando... </text>
+    }
+    else if (Peliculas3.Count == 0)
+    {
+        <text>No hay registros para mostrar... </text>
+    }
+    else
+    {
+        @for (var i = 0; i < Peliculas3.Count; i++)
+        {
+            <div>
+                @if (i == Peliculas3.Count - 1)
+                {
+                    <p>Esta es la ultima pelicula</p>
+                }
+                <p>@(i + 1)Titulo: <b>@Peliculas3[i].Titulo</b></p>
+                <p>Fecha Lanzamiento: <b>@Peliculas3[i].Lanzamiento.ToString("dd MMM yyyy")</b></p>
+            </div>
+        }
+    }
+</div>
 
 @code {
     string nombre = "Eduardo";
     public Pelicula SpiderMan { get { return ObtenerPelicula(); } }
     public List<Pelicula> Peliculas { get { return ObtenerPeliculas(); } }
+    public List<Pelicula> Peliculas2;
+    public List<Pelicula> Peliculas3;
 
     private Pelicula ObtenerPelicula()
     {
@@ -71,7 +128,7 @@
     private List<Pelicula> ObtenerPeliculas()
     {
         return new List<Pelicula>()
-    {
+{
             new Pelicula{ Titulo = "Spider-Man: Far From Home", Lanzamiento = new DateTime(2019, 7, 2) },
             new Pelicula{ Titulo = "Moana", Lanzamiento = new DateTime(2016, 11, 23) },
             new Pelicula{ Titulo = "Inception", Lanzamiento = new DateTime(2010, 7, 16) }
@@ -79,4 +136,11 @@
     }
 
     void ManejarClick() => Console.WriteLine("Me han clickeado desde metodo");
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(3000);
+        Peliculas2 = ObtenerPeliculas();
+        Peliculas3 = new List<Pelicula>();
+    }
 }
